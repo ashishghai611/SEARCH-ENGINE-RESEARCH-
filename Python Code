@@ -1,0 +1,141 @@
+from flask import Flask, request, jsonify
+from parsel import Selector
+from urllib.parse import quote
+import csv
+import httpx
+import mysql.connector
+import datetime
+import sys
+import re
+import time
+
+stderr_log_file = '/home/ashishds/public_html/vsearch/logs/file.log'
+sys.stderr = open(stderr_log_file, 'w')
+
+app = Flask(__name__)
+
+# MySQL database connection parameters
+db_config = {
+    'host': 'localhost',
+    'user': 'google_serp',
+    'password': 'Serpazure2!',
+    'database': 'google_serp_db',
+}
+
+# Establish MySQL database connection
+db_connection = mysql.connector.connect(**db_config)
+db_cursor = db_connection.cursor()
+
+
+# # Create a CSV file based on today's date
+# csv_file_name = f"{datetime.date.today().strftime('%Y-%m-%d')}_{target_domain}_{country_search_engine}.csv"
+
+
+
+# Dynamically create a table based on the CSV file name
+# sanitized_table_name = re.sub(r'[^a-zA-Z0-9_]', '_', csv_file_name.rstrip('.csv'))
+# db_cursor.execute(f
+
+client = httpx.Client(
+    headers={
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    },
+)
+
+def scrape_seo_ranks_to_mysql(keywords, domain, max_pages,country_search_engine):
+    csv_file_path="/home/ashishds/public_html/vsearch/csv/"
+    csv_file_name = f"{datetime.date.today().strftime('%Y-%m-%d')}_{domain}_{country_search_engine}.csv"
+    filecsv=open(f"{csv_file_path}{csv_file_name}","w",encoding="utf8")
+
+
+
+    #filecsv = open(csv_file_name, "w", encoding="utf8")
+
+    csv_columns = ["keyword","domain", "url", "position"]
+    writer = csv.DictWriter(filecsv, fieldnames=csv_columns)
+    writer.writeheader()
+
+    sanitized_table_name = re.sub(r'[^a-zA-Z0-9_]', '_', csv_file_name.rstrip('.csv'))
+    db_cursor.execute(f"""
+        CREATE TABLE IF NOT EXISTS {sanitized_table_name} (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            keyword VARCHAR(255),
+            domain VARCHAR(255),
+            url TEXT,
+            position INT
+        )
+    """)
+    db_connection.commit()
+
+
+    for keyword in keywords:
+        position = 0
+        for page in range(1, max_pages + 1):
+            print(f"Scraping keyword '{keyword}' at page number {page}")
+
+            url = f"https://{country_search_engine}/search?hl=en&q={quote(keyword)}" + (
+                f"&start={10 * (page - 1)}" if page > 1 else ""
+            )
+            request = client.get(url=url)
+            selector = Selector(text=request.text)
+
+            for result_box in selector.xpath(
+                "//h1[contains(text(),'Search Results')]/following-sibling::div[1]/div"
+            ):
+                try:
+                    title = result_box.xpath(".//h3/text()").get()
+                    text = "".join(
+                        result_box.xpath(".//div[@data-sncf]//text()").getall()
+                    )
+                    date = text.split("—")[0] if len(text.split("—")) > 1 else "None"
+                    url = result_box.xpath(".//h3/../@href").get()
+                    result_domain = url.split("/")[2].replace("www.", "")
+                    position += 1
+
+                    # Insert data into dynamically created MySQL table
+                    db_cursor.execute(f"""
+                    INSERT INTO {sanitized_table_name} (keyword,  domain, url, position)
+                    VALUES (%s, %s, %s, %s)
+                    """, (keyword,  result_domain, url, position))
+
+                    # Commit the insertion query
+                    db_connection.commit()
+
+                    # Write to CSV file
+                    writer.writerow(
+                        {
+                            "keyword": keyword,
+                            "domain": result_domain,
+                            "url": url,
+                            "position": position,
+                        }
+                    )
+                    time.sleep(2)
+                except:
+                    pass
+
+    filecsv.close()
+
+
+
+
+    # Example use with user input
+
+
+@app.route('/api/scrape', methods=['POST'])
+def api_scrape():
+    try:
+        data = request.get_json()
+        keywords = data.get('keywords', [])
+        domain = data.get('domain', '')
+        max_pages = data.get('max_pages', 1)
+        search_engine=data.get('search_engine','www.google.com')
+
+        scrape_seo_ranks_to_mysql(keywords, domain, max_pages,search_engine)
+        return jsonify({"status": "succeed"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+if __name__ == "__main__":
