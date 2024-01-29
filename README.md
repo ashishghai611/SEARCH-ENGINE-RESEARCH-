@@ -36,11 +36,9 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
                                     "max_pages": 1
                         }
 # Description
-* You have to enter keywords first for checking the ranking
-* You have to change example.com with your domain name for results
+* You have to enter keywords first for checking the ranking* You have to change example.com with your domain name for results
 
-                                                    ** API INFORMATION**
-|Api Name         | Description                                                                                                | Auth            |Https
-| SERP            | Search Engine Results Page ,Which tell you the ranking of your website on basis of keywords your provide   | NO              |Yes
-
-
+# Api Info
+API NAME  | Description | Auth | HTTPS 
+|---|---|---|---|---|
+| | SEARCH ENGINE RESULT PAGE| `In this api you can check the ranking of your website on basis of keywords` | No | Yes |
