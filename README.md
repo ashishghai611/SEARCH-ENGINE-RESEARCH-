@@ -6,7 +6,7 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
     <sub>The Project</sub>
     <br />
     <a href="CONTRIBUTING.md">Contributing Guide</a> •
-    <a href="https://github.com/davemachado/public-api">API for this project</a> •
+    <a href="API for this project">API for this project</a> •
     <a href="https://github.com/public-apis/public-apis/issues">Issues</a> •
     <a href="https://github.com/public-apis/public-apis/pulls">Pull Requests</a> •
     <a href="https://github.com/public-apis/public-apis/pulls">Python Code</a> •
