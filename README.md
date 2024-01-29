@@ -1,6 +1,9 @@
 # SEARCH-ENGINE-RESEARCH-
 Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings Description-Introducing SERP Insight Pro, your essential companion for optimizing Search Engine Result Page. Dominate the SERP game – try it now!
 
+
+
+
 <div align="center">
     <sub>The Project</sub>
     <br />
@@ -35,7 +38,7 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
                                     "search_engine":"www.Google.com",
                                     "max_pages": 1
                         }
-# Description
+# What to Do with this code
 * You have to enter keywords first for checking the ranking* You have to change example.com with your domain name for results
 
 # Api Info
