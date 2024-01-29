@@ -22,3 +22,25 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
     <a href="https://apihouse.vercel.app">Apihouse</a> •
     <a href="https://collective-api.vercel.app/">Collective APIs</a> 
 </div>
+
+
+**HOW TO HIT THIS API**
+
+                       {
+                                  "keywords": 
+                                  ##any keywords like
+                                [ "technology trends","web development tools","artificial intelligence applications"
+                                              ],
+                                    "domain": "www.example.com",
+                                    "search_engine":"www.Google.com",
+                                    "max_pages": 1
+                        }
+# Description
+* You have to enter keywords first for checking the ranking
+* You have to change example.com with your domain name for results
+
+                                                    ** API INFORMATION**
+|Api Name         | Description                                                                                                | Auth            |Https
+| SERP            | Search Engine Results Page ,Which tell you the ranking of your website on basis of keywords your provide   | NO              |Yes
+
+
