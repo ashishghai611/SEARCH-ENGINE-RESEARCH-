@@ -24,7 +24,7 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
 </div>
 
 
-**HOW TO HIT THIS API**
+# How To Hit This Api 
 
                        {
                                   "keywords": 
@@ -41,4 +41,4 @@ Title: SERP Insight Pro - Elevate Your SEO with Domain-Based Keyword Rankings De
 # Api Info
 API NAME  | Description | Auth | HTTPS 
 |---|---|---|---|---|
-| | SEARCH ENGINE RESULT PAGE| `In this api you can check the ranking of your website on basis of keywords` | No | Yes |
+| SEARCH ENGINE RESULT PAGE| `In this api you can check the ranking of your website on basis of keywords` | No | Yes |
